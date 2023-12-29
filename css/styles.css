@@ -13,4 +13,10 @@
 
 body {
     background: url(../assets/img/Fondo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.subtitulo {
+    width: 60%;
 }

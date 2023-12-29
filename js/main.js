@@ -75,53 +75,30 @@ function busqueda(evt) {
 };
 
 
-// Función de Encargo de productos.
-function encargarProductos(){
-    let valor = 'True';
-    let total = 0;
-    let compras = [];
-    while (valor === 'True') {
-        let producto = prompt("Ingrese el nombre del producto que desea encargar ('exit' para dejar de agregar productos): ");
-        let numero = prompt("Ingrese la cantidad que desea llevar del producto: ");
+let formularioProductos = document.getElementById("formularioProductos").addEventListener('submit', busquedaProductos);
 
-        numero = Number(numero);
-        let existencia
+// Función de búsqueda que realiza un filtro según las categorías disponibles.
+function busquedaProductos(evt) {
+    evt.preventDefault();
+    let valorUsuario = document.getElementById('busquedaProducto').value;
+    // console.log(valorUsuario);
+    if (valorUsuario) {
+        let filtro = minimarket.filter( (item) => {
+            return item.nombre == valorUsuario;
+        });
+        let resultado = (valor) => {
+            return`
+            <h2><u>Categoría: ${valor.categoria[0].toLocaleUpperCase() + valor.categoria.slice(1)}</u></h2>
+            <li>${valor.nombre[0].toLocaleUpperCase() + valor.nombre.slice(1)}: $ ${valor.precio}, cantidad en local: ${valor.cantidad}</li>
+        `};
+        
+        let titulo = `
+            
+        `
 
-        if (producto == 'exit') {
-            // valor === "False";
-            break;
-        } else {
-            let comprobacion = minimarket.find( (item) => item.nombre == producto);
-            existencia = comprobacion;
-        };
-        // console.log(existencia);
-        // console.log(typeof(existencia));
-
-        if (existencia == undefined) {
-            alert("El producto no se encuentra en el Minimarket Delicias, vuelve a intentar.");
-        } else {
-            if (Number.isInteger(numero)  && numero >= 0) {
-                if (existencia.cantidad >= numero) {
-                    existencia.cantidad -= numero;
-                    let item = {nombre: existencia.nombre, valor: numero*existencia.precio} ;
-                    compras.push(item);
-                } else {
-                    alert("La número ingresada excede la cantidad total del producto " + existencia.nombre + ". Vuelve a intentar.");
-                };
-            } else {
-                alert("El valor ingresado no es correcto, vuelve a intentar.");
-            };
-        };
+        let mostrarFiltrado = filtro.map(resultado);
+        let respuesta = document.querySelector('#respuestaProductos');
+        respuesta.innerHTML = titulo + mostrarFiltrado.join("");
+        
     };
-
-    for (item of compras) {
-        total += item.valor;
-    };
-    alert("El total a pagar por la lista de compras es: " + total + ".\nIngrese sus datos a continuación para continuar con la compra");
-    let cliente = prompt("Ingrese su nombre: ");
-    let direccion = prompt("Ingrese su dirección de despacho: ");
-    let correo = prompt("Ingrese su correo electrónico: ");
-    return alert("¡Gracias por su compra " + cliente + "!\nSe le enviará un correo con los detalles de la compra.\n ¡Que tenga un buen día!")
 };
-
-
